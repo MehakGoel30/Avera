@@ -61,7 +61,7 @@ def perform_action(command):
         return f"Today is {day_of_week}."
 
     # Math
-    if 'add' in command or '+' in command or 'plus' in command or ' + ' in command:
+    if 'add' in command or '+' in command or 'plus' in command:
         numbers = convert_words_to_digits(command)
         if len(numbers) >= 2:
             return f"The result is {sum(numbers)}"
@@ -157,19 +157,17 @@ def perform_action(command):
     elif 'tell me a fact' in command or 'fun fact' in command or 'interesting fact' in command or 'fact' in command:
         return "Did you know? Honey never spoils. Archaeologists found 3000-year-old jars of honey in Egyptian tombs that still taste great!"
 
-    elif 'take a note' in command or 'write this down' in command or 'take note' in command or 'note' in command:
-        note = command.split('take a note')[-1].strip() or command.split('write this down')[-1].strip()
-        with open("avera_notes.txt", "a") as f:
-            f.write(f"{datetime.datetime.now()}: {note}\n")
-        return "Note saved successfully!"
-
-    elif 'read my notes' in command or 'notes' in command:
-        try:
-            with open("avera_notes.txt", "r") as f:
-                notes = f.read()
-            return f"Here are your notes:\n{notes}" if notes else "You don't have any notes yet."
-        except FileNotFoundError:
-            return "You haven't taken any notes yet."
+    elif any(phrase in command for phrase in ['take a note', 'write this down', 'take note', 'note']):
+        for trigger in ['take a note', 'write this down', 'take note', 'note']:
+            if trigger in command:
+                note = command.split(trigger, 1)[-1].strip()
+                break
+        if note:
+            with open("avera_notes.txt", "a") as f:
+                f.write(f"{datetime.datetime.now()}: {note}\n")
+            return "Note saved successfully!"
+        else:
+            return "What should I note down?"
 
     elif 'take screenshot' in command or 'take ss' in command:
         screenshot = pyautogui.screenshot()
