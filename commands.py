@@ -45,7 +45,7 @@ def perform_action(command):
     command = command.lower()
     command = re.sub(r'[^\w\s]', '', command)
 
-    if 'hi avera' in command or 'hello avera' in command or 'hey avera' in command:
+    if 'hi avera' in command or 'hello avera' in command or 'hey avera' in command or 'avera' in command:
         return "Hi there! How can I assist you today?"
 
     if 'time' in command:
@@ -56,12 +56,12 @@ def perform_action(command):
         date = datetime.datetime.now().strftime('%A, %B %d, %Y')
         return f"Today's date is {date}"
 
-    if 'what day is it' in command or 'what is the day today' in command or 'what day it is' in command:
+    if 'what day is it' in command or 'what is the day today' in command or 'what day it is' in command or 'it is ' in command or 'is it' in command:
         day_of_week = calendar.day_name[datetime.datetime.now().weekday()]
         return f"Today is {day_of_week}."
 
     # Math
-    if 'add' in command or '+' in command or 'plus' in command:
+    if 'add' in command or '+' in command or 'plus' in command or ' + ' in command:
         numbers = convert_words_to_digits(command)
         if len(numbers) >= 2:
             return f"The result is {sum(numbers)}"
@@ -157,13 +157,13 @@ def perform_action(command):
     elif 'tell me a fact' in command or 'fun fact' in command or 'interesting fact' in command or 'fact' in command:
         return "Did you know? Honey never spoils. Archaeologists found 3000-year-old jars of honey in Egyptian tombs that still taste great!"
 
-    elif 'take a note' in command or 'write this down' in command:
+    elif 'take a note' in command or 'write this down' in command or 'take note' in command or 'note' in command:
         note = command.split('take a note')[-1].strip() or command.split('write this down')[-1].strip()
         with open("avera_notes.txt", "a") as f:
             f.write(f"{datetime.datetime.now()}: {note}\n")
         return "Note saved successfully!"
 
-    elif 'read my notes' in command:
+    elif 'read my notes' in command or 'notes' in command:
         try:
             with open("avera_notes.txt", "r") as f:
                 notes = f.read()
@@ -171,7 +171,7 @@ def perform_action(command):
         except FileNotFoundError:
             return "You haven't taken any notes yet."
 
-    elif 'take screenshot' in command:
+    elif 'take screenshot' in command or 'take ss' in command:
         screenshot = pyautogui.screenshot()
         file_name = f"screenshot_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
         screenshot.save(file_name)
