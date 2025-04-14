@@ -1,5 +1,4 @@
-# AI Desktop Virtual Assistant
-
+# AVERA
 A Python-based voice assistant built using speech recognition and text-to-speech libraries.
 
 ## Features
